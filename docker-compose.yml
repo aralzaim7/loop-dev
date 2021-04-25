@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: loop/app
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/loop-dev
+    networks:
+      - loop-net
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_ROOT_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - loop_mysql:/var/lib/mysql
+    networks:
+      - loop-net
+  redis:
+    image: redis:alpine
+    volumes:
+      - loop_redis:/data
+    networks:
+      - loop-net
+networks:
+  loop-net:
+    driver: "bridge"
+volumes:
+  loop_redis:
+    driver: "local"
+  loop_mysql:
+    driver: "local"
