@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,8 +19,16 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
 
-//    return Inertia::render('Index', [
-//        'foo' => "test"
-//    ]);
-     return view('welcome');
+    return Inertia::render('Index');
 });
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/profile', [UserController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/reservation', [ReservationController::class, 'index']);
+
+});
+
+

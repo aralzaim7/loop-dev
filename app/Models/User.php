@@ -15,11 +15,30 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array
+     *  'first_name' => ['required', 'string', 'max:255'],
+    'last_name' => ['required', 'string', 'max:255'],
+    'email' => [
+    'required',
+    'string',
+    'email',
+    'max:255',
+    Rule::unique(User::class),
+    ],
+    'password' => $this->passwordRules(),
+    'phone' => ['required','numeric','digits_between:1,15'],
+    'address' => ['required', 'string'],
+    'city' => ['required', 'string'],
+    'country' => ['required', 'string'],
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'phone',
+        'address',
+        'city',
+        'country'
     ];
 
     /**
