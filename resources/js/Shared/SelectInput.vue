@@ -6,7 +6,7 @@
 				        :class="{ error: error }">
 						<slot/>
 				</select>
-				<div v-if="error" class="form-error">{{ error }}</div>
+				<div v-if="error" class="text-red-500 text-sm">{{ error }}</div>
 		</div>
 </template>
 

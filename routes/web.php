@@ -27,7 +27,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [UserController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
     Route::get('/reservation', [ReservationController::class, 'index']);
+    Route::post('/reservation', [ReservationController::class, 'store']);
+    Route::put('/reservation', [ReservationController::class, 'update']);
 
 });
 

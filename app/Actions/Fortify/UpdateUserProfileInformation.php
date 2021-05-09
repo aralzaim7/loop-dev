@@ -24,7 +24,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'country' => ['required', 'string'],
-        ])->validateWithBag('updateProfileInformation');
+        ])->validate();
         
         $user->forceFill([
             'phone' => $input['phone'],

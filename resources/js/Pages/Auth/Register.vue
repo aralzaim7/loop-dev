@@ -22,7 +22,7 @@
 																</div>
 
 																<div class="col-span-6 sm:col-span-3">
-																		<text-input v-model="form.email" :error="form.errors.email" label="Email address"/>
+																		<text-input v-model="form.email" name="email" :error="form.errors.email" label="Email address"/>
 																</div>
 
 																<div class="col-span-6 sm:col-span-3">
@@ -72,7 +72,7 @@
 		</div>
 </template>
 <script>
-import Layout from '@/Shared/Layout'
+import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";

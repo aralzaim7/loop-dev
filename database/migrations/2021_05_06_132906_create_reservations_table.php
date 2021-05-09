@@ -22,7 +22,7 @@ class CreateReservationsTable extends Migration
             $table->date('reservation_date');
             $table->time('reservation_start_time');
             $table->time('reservation_end_time');
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

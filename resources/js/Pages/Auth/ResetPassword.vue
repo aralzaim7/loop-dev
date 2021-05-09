@@ -49,7 +49,7 @@
 		</div>
 </template>
 <script>
-import Layout from '@/Shared/Layout'
+import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 
 export default {

@@ -43,5 +43,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'uretim',
             'cost_per_hour' => '30.00',
         ]);
+
+        ReservationCategory::create([
+            'name' => 'toplanti',
+            'cost_per_hour' => '15.00',
+        ]);
     }
 }

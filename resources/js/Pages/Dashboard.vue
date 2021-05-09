@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout'
+import Layout from '@/Layouts/Layout'
 
 export default {
 		name: "Dashboard",
