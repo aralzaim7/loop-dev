@@ -51,11 +51,13 @@
 														</div>
 												</div>
 												<div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
-														<button :disabled="form.processing"
-																		type="submit"
-														        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+														<loading-button :disabled="form.processing"
+														                :loading="form.processing"
+														                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+														                :class="form.processing ? 'bg-opacity-25 hover:none' : 'hover:bg-blue-700'"
+														                type="submit">
 																Save
-														</button>
+														</loading-button>
 												</div>
 										</div>
 								</form>
@@ -97,12 +99,13 @@
 														</div>
 												</div>
 												<div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
-														<button :disabled="form2.processing"
-																		type="submit"
-														        :class="form2.processing ? 'bg-red-500' : ''"
-														        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+														<loading-button :disabled="form2.processing"
+														                :loading="form2.processing"
+														                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+														                :class="form2.processing ? 'bg-opacity-25 hover:none' : 'hover:bg-blue-700'"
+														                type="submit">
 																Reset password
-														</button>
+														</loading-button>
 												</div>
 										</div>
 								</form>
@@ -115,13 +118,17 @@ import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";
+import LoadingButton from "@/Shared/LoadingButton"
+
 
 export default {
 		name: 'Profile',
 		components: {
 				TextInput,
 				TextareaInput,
-				SelectInput
+				SelectInput,
+				LoadingButton
+
 		},
 		layout: Layout,
 		props: {user: Object},

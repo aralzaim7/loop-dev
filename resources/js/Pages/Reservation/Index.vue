@@ -20,7 +20,6 @@
 										<th class="px-6 pt-6 pb-4">Room type</th>
 										<th class="px-6 pt-6 pb-4">Reservation time</th>
 										<th class="px-6 pt-6 pb-4">User</th>
-										<th class="px-6 pt-6 pb-4">Email</th>
 										<th class="px-6 pt-6 pb-4">Phone</th>
 										<th class="px-6 pt-6 pb-4">Created</th>
 								</tr>
@@ -44,9 +43,6 @@
 												{{ reservation.user.full_name }}
 										</td>
 
-										<td class="border-t px-6 py-4 ">
-												{{ reservation.user.email }}
-										</td>
 
 										<td class="border-t px-6 py-4 ">
 												{{ reservation.user.phone }}
@@ -58,7 +54,7 @@
 
 								</tr>
 								<tr v-if="reservations.length === 0">
-										<td class="border-t px-6 py-4" colspan="4">No organizations found.</td>
+										<td class="border-t px-6 py-4 text-center" colspan="7">No reservations found</td>
 								</tr>
 						</table>
 				</div>

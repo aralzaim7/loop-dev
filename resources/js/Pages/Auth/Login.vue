@@ -33,12 +33,17 @@
 														</div>
 												</div>
 												<div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
-														<button type="submit"
-														        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+														<loading-button :disabled="form.processing"
+														                :loading="form.processing"
+														                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+														                :class="form.processing ? 'bg-opacity-25 hover:none' : 'hover:bg-blue-700'"
+														                type="submit">
 																Login
-														</button>
+														</loading-button>
+
+
 														<inertia-link href="/forgot-password"
-														              class="inline-flex justify-center py-2 px-4 text-sm font-medium rounded-md text-indigo-500">
+														              class="inline-flex justify-center py-2 px-4 text-sm font-medium rounded-md text-blue-500">
 																Forgot password?
 														</inertia-link>
 												</div>
@@ -53,12 +58,14 @@
 import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
+import LoadingButton from "@/Shared/LoadingButton"
 
 export default {
 		name: 'Login',
 		components: {
 				TextInput,
-				TextareaInput
+				TextareaInput,
+				LoadingButton
 		},
 		layout: Layout,
 

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        User::factory([
             'first_name' => 'Aral',
             'last_name' => 'Zaim',
             'email' => 'aralzaim7@gmail.com',
@@ -26,27 +26,9 @@ class DatabaseSeeder extends Seeder
             'address' => 'Sehit Kutsi Ilhan Sokak, Hancerli Apt',
             'country' => 'cy',
             'city' => 'Lefkosa'
-        ]);
+        ])->create();
 
-        Reservation::create([
-            'user_id' => 1,
-            'category_id' => 1,
-            'title' => 'Test Title',
-            'room_type' => 'atolye',
-            'reservation_date' => '2021-05-06',
-            'reservation_start_time' => '16:30:00',
-            'reservation_end_time' => '17:30:00',
-            'status' => 'pending',
-        ]);
+        Reservation::factory()->count(5)->create();
 
-        ReservationCategory::create([
-            'name' => 'uretim',
-            'cost_per_hour' => '30.00',
-        ]);
-
-        ReservationCategory::create([
-            'name' => 'toplanti',
-            'cost_per_hour' => '15.00',
-        ]);
     }
 }

@@ -22,7 +22,8 @@
 																</div>
 
 																<div class="col-span-6 sm:col-span-3">
-																		<text-input v-model="form.email" name="email" :error="form.errors.email" label="Email address"/>
+																		<text-input v-model="form.email" name="email" :error="form.errors.email"
+																		            label="Email address"/>
 																</div>
 
 																<div class="col-span-6 sm:col-span-3">
@@ -60,10 +61,13 @@
 														</div>
 												</div>
 												<div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
-														<button type="submit"
-														        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+														<loading-button :disabled="form.processing"
+														                :loading="form.processing"
+														                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+														                :class="form.processing ? 'bg-opacity-25 hover:none' : 'hover:bg-blue-700'"
+														                type="submit">
 																Register
-														</button>
+														</loading-button>
 												</div>
 										</div>
 								</form>
@@ -76,13 +80,16 @@ import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";
+import LoadingButton from "@/Shared/LoadingButton"
+
 
 export default {
 		name: 'Register',
 		components: {
 				TextInput,
 				TextareaInput,
-				SelectInput
+				SelectInput,
+				LoadingButton
 		},
 		layout: Layout,
 		data() {
