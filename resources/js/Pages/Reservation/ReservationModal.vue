@@ -1,5 +1,6 @@
 <template>
 		<ModalBase :open="open"
+		           @close-modal="closeModal()"
 		           class="p-5"
 		           wrapper-class="w-2/5 inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:p-6">
 				<div class="pb-2 flex justify-between items-center">
@@ -8,7 +9,7 @@
 										Reservation
 								</h3>
 						</div>
-						<button @click="closeModal">
+						<button @click="closeModal()">
 								<XIcon class="block h-6 w-6"/>
 						</button>
 				</div>
@@ -72,6 +73,7 @@ import {XIcon} from '@heroicons/vue/outline'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";
+import LoadingButton from "@/Shared/LoadingButton";
 
 export default {
 		props: {
@@ -83,7 +85,8 @@ export default {
 				XIcon,
 				TextInput,
 				TextareaInput,
-				SelectInput
+				SelectInput,
+				LoadingButton
 		},
 		data() {
 				return {
@@ -102,7 +105,11 @@ export default {
 
 		methods: {
 				createReservation() {
-						this.form.post('/reservation')
+						this.form.post('/reservation', {
+								onSuccess: () => {
+										this.closeModal();
+								}
+						})
 				},
 				closeModal() {
 						this.$emit('close-modal');

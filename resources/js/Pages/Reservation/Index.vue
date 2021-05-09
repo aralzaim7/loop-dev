@@ -22,6 +22,7 @@
 										<th class="px-6 pt-6 pb-4">User</th>
 										<th class="px-6 pt-6 pb-4">Phone</th>
 										<th class="px-6 pt-6 pb-4">Created</th>
+										<th class="px-6 pt-6 pb-4">Process</th>
 								</tr>
 								<tr v-for="reservation in reservations" :key="reservation.id"
 								    class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -51,6 +52,16 @@
 										<td class="border-t px-6 py-4 ">
 												{{ reservation.readable_creation_date }}
 										</td>
+										<td class="border-t px-6 py-4 ">
+												<button @click="editReservation(reservation)"
+												        class="focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-2 px-4 rounded-full">
+														Edit
+												</button>
+												<button @click="deleteReservation(reservation.id)"
+												        class="focus:outline-none bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full">
+														Delete
+												</button>
+										</td>
 
 								</tr>
 								<tr v-if="reservations.length === 0">
@@ -59,9 +70,11 @@
 						</table>
 				</div>
 		</div>
-		<reservation-modal @close-modal="isModalOpen = false"
-		                   :open="isModalOpen"
-		                   :categories="reservation_categories"
+		<reservation-modal
+
+				@close-modal="isModalOpen = false"
+				:open="isModalOpen"
+				:categories="reservation_categories"
 		>
 		</reservation-modal>
 </template>
@@ -78,19 +91,26 @@ export default {
 				reservation_categories: Object
 		},
 		computed:
-				{
-
-				},
+				{},
 		components: {
 				ReservationModal
 		},
 		data() {
 				return {
 						isModalOpen: false,
+						editingReservation: null
 				}
 		},
 
-		methods: {},
+		methods: {
+				editReservation(reservation) {
+						this.editingReservation = reservation;
+				}
+				,
+				deleteReservation(reservation) {
+						alert('are you sure you want to delete this reservation ? ')
+				}
+		},
 }
 </script>
 

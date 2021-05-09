@@ -31,16 +31,17 @@ class User extends Authenticatable
     'city' => ['required', 'string'],
     'country' => ['required', 'string'],
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-        'phone',
-        'address',
-        'city',
-        'country'
-    ];
+    protected $guarded = [];
+//    protected $fillable = [
+//        'first_name',
+//        'last_name',
+//        'email',
+//        'password',
+//        'phone',
+//        'address',
+//        'city',
+//        'country'
+//    ];
 
     /**
      * The attributes that should be hidden for arrays.

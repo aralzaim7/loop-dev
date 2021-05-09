@@ -13,10 +13,13 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = Reservation::where('user_id', auth()->user()->id)->with('user')->with('category')->get();
+        $reservations = auth()->user()->reservations()->paginate(50);
+        $reservations->load(['user', 'category']);
+
         $reservation_categories = ReservationCategory::all();
 
         return Inertia::render('Reservation/Index')->with([
+            //'pagination' => $reservations->links(),
             'reservations' => $reservations,
             'reservation_categories' => $reservation_categories,
         ]);
@@ -24,15 +27,9 @@ class ReservationController extends Controller
 
     public function store(StoreReservationRequest $request)
     {
-        $reservation = Reservation::create([
-            'title' => $request->title,
-            'category_id' => $request->category_id,
-            'room_type' => $request->room_type,
-            'reservation_date' => $request->reservation_date,
-            'reservation_start_time' => $request->reservation_start_time,
-            'reservation_end_time' => $request->reservation_end_time,
-            'user_id'=>auth()->user()->id
-        ]);
+        auth()->user()
+            ->reservations()
+            ->create($request->validated());
     }
 
     public function update(Request $request)

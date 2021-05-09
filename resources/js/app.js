@@ -1,6 +1,8 @@
 import { createApp, h } from 'vue'
 import { App, plugin } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress'
+import VueClickAway from "vue3-click-away";
+
 
 InertiaProgress.init({
 	// The delay after which the progress bar will
@@ -30,4 +32,5 @@ const app = createApp({
 })
 
 app.use(plugin)
+	.use(VueClickAway)
 	.mount(el);

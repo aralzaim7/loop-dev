@@ -21,7 +21,8 @@
 								            leave-from-class="opacity-100 translate-y-0 sm:scale-100"
 								            leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 								>
-										<div v-show="open"
+										<div v-if="open"
+										     v-click-away="onClickAway"
 										     :class="wrapperClass ||'inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6'"
 										>
 												<slot></slot>
@@ -38,6 +39,13 @@ export default {
 		props: {
 				open: {required: true, type: Boolean},
 				wrapperClass: String
+		},
+		methods:{
+				onClickAway(event) {
+						console.log(event);
+						if(!open) return
+						this.$emit('close-modal');
+				},
 		}
 }
 </script>
