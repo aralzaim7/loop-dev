@@ -67,8 +67,9 @@
 												<td class="border-t px-6 py-4 text-center" colspan="7">No reservations found</td>
 										</tr>
 								</table>
-								<pagination class="m-2 pb-4"/>
-								<pagination-left class="m-2 pb-4"/>
+								<!--								<pagination class="m-2 pb-4"/>-->
+								<pagination-left class="m-2 pb-4"
+								                 :reservations="reservations"/>
 						</div>
 				</div>
 				<reservation-modal

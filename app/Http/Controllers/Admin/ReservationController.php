@@ -13,7 +13,7 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = auth()->user()->reservations()->paginate(10);
+        $reservations = auth()->user()->reservations()->paginate(2);
         $reservations->load(['user', 'category']);
 
 
