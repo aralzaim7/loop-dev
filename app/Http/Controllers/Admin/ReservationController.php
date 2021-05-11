@@ -13,13 +13,13 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = auth()->user()->reservations()->paginate(50);
+        $reservations = auth()->user()->reservations()->paginate(10);
         $reservations->load(['user', 'category']);
+
 
         $reservation_categories = ReservationCategory::all();
 
         return Inertia::render('Reservation/Index')->with([
-            //'pagination' => $reservations->links(),
             'reservations' => $reservations,
             'reservation_categories' => $reservation_categories,
         ]);

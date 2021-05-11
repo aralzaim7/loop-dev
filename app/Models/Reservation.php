@@ -30,7 +30,7 @@ class Reservation extends Model
     {
         $reservationStart = Carbon::parse($this->reservation_start_time)->format('H:i');
         $reservationEnd  = Carbon::parse($this->reservation_end_time)->format('H:i');
-        return "{$this->reservation_date} {$reservationStart} - {$reservationEnd}";
+        return "<span>{$this->reservation_date} <br/> {$reservationStart} - {$reservationEnd}</span>";
     }
 
     public function getReadableCreationDateAttribute(): string
