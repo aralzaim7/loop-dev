@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
             'phone' => '05338405569',
             'address' => 'Sehit Kutsi Ilhan Sokak, Hancerli Apt',
             'country' => 'cy',
-            'city' => 'Lefkosa'
+            'city' => 'Lefkosa',
+            'is_admin' => true
+
         ])->create();
 
         Reservation::factory()->count(5)->create();

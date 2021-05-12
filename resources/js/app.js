@@ -20,6 +20,7 @@ InertiaProgress.init({
 })
 window.axios = require('axios');
 
+
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const el = document.getElementById('app')

@@ -19,18 +19,21 @@
 										<div class="grid grid-cols-6 gap-6">
 												<div class="col-span-6 sm:col-span-3">
 														<text-input v-model="form.title" :error="form.errors.title"
+														            :model-value="reservation?.title"
 														            label="Title"/>
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
 
 												<div class="col-span-6 sm:col-span-3">
 														<select-input v-model="form.category_id" :error="form.errors.category_id"
+														              :model-value="reservation?.category_id"
 														              label="Category">
 																<option v-for="category in categories" :value="category.id">{{ category.name }}</option>
 														</select-input>
 												</div>
 												<div class="col-span-6 sm:col-span-3">
 														<select-input v-model="form.room_type" :error="form.errors.room_type"
+														              :model-value="reservation?.room_type"
 														              label="Room type">
 																<option value="terrace">Terrace</option>
 																<option value="common">Common place</option>
@@ -38,18 +41,23 @@
 												</div>
 
 												<div class="col-span-6 sm:col-span-3">
-														<text-input v-model="form.reservation_date" :error="form.errors.reservation_date"
-														            label="Date"/>
+
+														<datepicker-input v-model="form.reservation_date"
+														                  label="Date"/>
+
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
 
 												<div class="col-span-6 sm:col-span-3">
-														<text-input v-model="form.reservation_start_time"
+														<text-input type="time" :min="startTime" :max="endTime" :step="timeInterval"
+														            v-model="form.reservation_start_time"
 														            :error="form.errors.reservation_start_time" label="Start time"/>
 												</div>
 
 												<div class="col-span-6 sm:col-span-3">
-														<text-input v-model="form.reservation_end_time" :error="form.errors.reservation_end_time"
+														<text-input type="time" :min="startTime+1" :max="endTime+1" :step="timeInterval"
+														            v-model="form.reservation_end_time"
+														            :error="form.errors.reservation_end_time"
 														            label="End time"/>
 												</div>
 										</div>
@@ -60,7 +68,7 @@
 										                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
 										                :class="form.processing ? 'bg-opacity-25 hover:none' : 'hover:bg-blue-700'"
 										                type="submit">
-												Create
+												{{ reservation ? 'Edit Reservation' : 'Create' }}
 										</loading-button>
 								</div>
 						</div>
@@ -68,36 +76,43 @@
 		</ModalBase>
 </template>
 <script>
+
 import ModalBase from "@/Shared/ModalBase";
 import {XIcon} from '@heroicons/vue/outline'
 import TextInput from '@/Shared/TextInput'
 import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";
 import LoadingButton from "@/Shared/LoadingButton";
+import DatepickerInput from "@/Shared/DatepickerInput";
 
 export default {
 		props: {
-				open: Boolean,
-				categories: Object,
+				open: {Boolean, required: true},
+				categories: {Object, required: true},
+				reservation: {Object, required: true},
 		},
 		components: {
+				DatepickerInput,
 				ModalBase,
 				XIcon,
 				TextInput,
 				TextareaInput,
 				SelectInput,
-				LoadingButton
+				LoadingButton,
 		},
 		data() {
 				return {
 						form: this.$inertia.form({
 								title: null,
-								category_id: null,
-								room_type: null,
-								reservation_date: null,
+								category_id: '',
+								room_type: '',
+								reservation_date: new Date(),
 								reservation_start_time: null,
 								reservation_end_time: null,
 						}),
+						startTime: "09:00",
+						endTime: "17:00",
+						timeInterval: "1800"
 
 				}
 		},
@@ -105,7 +120,7 @@ export default {
 
 		methods: {
 				createReservation() {
-						this.form.post('/reservation', {
+						this.form.post('/reservations', {
 								onSuccess: () => {
 										this.closeModal();
 								}

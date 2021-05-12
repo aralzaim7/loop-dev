@@ -57,8 +57,8 @@
 <script>
 import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
-import TextareaInput from "@/Shared/TextareaInput"
-import LoadingButton from "@/Shared/LoadingButton"
+import TextareaInput from '@/Shared/TextareaInput'
+import LoadingButton from '@/Shared/LoadingButton'
 
 export default {
 		name: 'Login',

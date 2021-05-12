@@ -41,8 +41,10 @@
 
 												</td>
 
-												<td class="border-t px-6 py-4 ">
+												<td class="border-t px-6 py-4">
 														{{ reservation.user.full_name }}
+														{{ ' ' }}
+														<ShieldCheckIcon v-if="reservation.user.is_admin" class="block h-4 w-4 inline-block"/>
 												</td>
 
 												<td class="border-t px-6 py-4 ">
@@ -53,28 +55,29 @@
 														{{ reservation.readable_creation_date }}
 												</td>
 												<td class="border-t px-6 py-4 space-x-1">
-														<button @click="editReservation(reservation)"
+														<button @click="editReservationClicked(reservation)"
 														        class="focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-1 px-2 text-sm rounded">
 																Edit
 														</button>
-														<button @click="deleteReservation(reservation.id)"
+														<button @click="deleteReservationClicked(reservation.id)"
 														        class="focus:outline-none bg-red-500 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
 																Delete
 														</button>
 												</td>
 										</tr>
-										<tr v-if="reservations.length === 0">
+										<tr v-if="reservations.data.length === 0">
 												<td class="border-t px-6 py-4 text-center" colspan="7">No reservations found</td>
 										</tr>
 								</table>
 								<!--								<pagination class="m-2 pb-4"/>-->
-								<pagination-left class="m-2 pb-4"
+								<pagination-left v-if="reservations.data.length !== 0" class="m-2 pb-4"
 								                 :reservations="reservations"/>
 						</div>
 				</div>
 				<reservation-modal
-						@close-modal="isModalOpen = false"
+						@close-modal="closeModal()"
 						:open="isModalOpen"
+						:reservation="editingReservation"
 						:categories="reservation_categories"
 				>
 				</reservation-modal>
@@ -83,6 +86,7 @@
 
 <script>
 import Layout from '@/Layouts/Layout';
+import {ShieldCheckIcon} from '@heroicons/vue/outline'
 import ReservationModal from "./ReservationModal";
 import Pagination from "@/Shared/Pagination";
 import PaginationLeft from "@/Shared/PaginationLeft";
@@ -99,7 +103,8 @@ export default {
 		components: {
 				PaginationLeft,
 				Pagination,
-				ReservationModal
+				ReservationModal,
+				ShieldCheckIcon
 		},
 		data() {
 				return {
@@ -109,12 +114,19 @@ export default {
 		},
 
 		methods: {
-				editReservation(reservation) {
+				closeModal() {
+						this.isModalOpen = false;
+						this.editingReservation = null;
+				},
+				editReservationClicked(reservation) {
 						this.editingReservation = reservation;
+						this.isModalOpen = true;
 				}
 				,
-				deleteReservation(reservation) {
-						alert('are you sure you want to delete this reservation ? ')
+				deleteReservationClicked(reservation_id) {
+						this.$inertia.delete(`/reservations/${reservation_id}`, {
+								onBefore: () => confirm('Are you sure you want to delete this reservation?'),
+						})
 				}
 		},
 }

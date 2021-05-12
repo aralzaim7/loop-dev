@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->text('address');
             $table->string('city');
             $table->string('country');
+            $table->boolean('is_admin');
             $table->rememberToken();
             $table->timestamps();
         });

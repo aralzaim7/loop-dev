@@ -7,16 +7,15 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Models\Reservation;
 use App\Models\ReservationCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = auth()->user()->reservations()->paginate(2);
+        $reservations = auth()->user()->reservations()->paginate(5);
         $reservations->load(['user', 'category']);
-
-
         $reservation_categories = ReservationCategory::all();
 
         return Inertia::render('Reservation/Index')->with([
@@ -35,5 +34,11 @@ class ReservationController extends Controller
     public function update(Request $request)
     {
         dd($request);
+
+    }
+    public function destroy(Reservation $reservation)
+    {
+            $reservation->delete();
+            return redirect('/reservations');
     }
 }
