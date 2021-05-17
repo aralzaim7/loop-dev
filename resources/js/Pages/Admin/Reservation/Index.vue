@@ -5,16 +5,22 @@
 								<h1 class="mb-2 font-bold text-3xl">All Reservations Page</h1>
 								<ul class="list-reset flex border-b">
 										<li class="mr-1">
-												<button @click="getNewData('all')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
-												        :class="status === 'all' ? 'border-l border-t border-r -mb-px' : ''">Approved</button>
+												<button @click="getNewData('all')"
+												        class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+												        :class="status === 'all' ? 'border-l border-t border-r -mb-px' : ''">Approved
+												</button>
 										</li>
 										<li class="mr-1">
-												<button @click="getNewData('pending')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
-																:class="status === 'pending' ? 'border-l border-t border-r -mb-px' : ''">Pending</button>
+												<button @click="getNewData('pending')"
+												        class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+												        :class="status === 'pending' ? 'border-l border-t border-r -mb-px' : ''">Pending
+												</button>
 										</li>
 										<li class="mr-1">
-												<button @click="getNewData('approved')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
-												        :class="status === 'approved' ? 'border-l border-t border-r -mb-px' : ''">Approved</button>
+												<button @click="getNewData('approved')"
+												        class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+												        :class="status === 'approved' ? 'border-l border-t border-r -mb-px' : ''">Approved
+												</button>
 										</li>
 
 								</ul>
@@ -68,7 +74,7 @@
 												</td>
 										</tr>
 										<tr v-if="reservations.data.length === 0">
-												<td class="border-t px-6 py-4 text-center" colspan="7">No reservations found</td>
+												<td class="border-t px-6 py-4 text-center" colspan="8">No reservations found</td>
 										</tr>
 								</table>
 								<!--								<pagination class="m-2 pb-4"/>-->
@@ -101,8 +107,6 @@ export default {
 				reservations: Object,
 				reservationCategories: Object
 		},
-		computed:
-				{},
 		components: {
 				PaginationLeft,
 				Pagination,
@@ -113,7 +117,7 @@ export default {
 				return {
 						isModalOpen: false,
 						editingReservation: null,
-						status:new URL(window.location.href).searchParams.get('status') ? new URL(window.location.href).searchParams.get('status') : 'all',
+						status: new URL(window.location.href).searchParams.get('status') ? new URL(window.location.href).searchParams.get('status') : 'all',
 				}
 		},
 
@@ -126,14 +130,13 @@ export default {
 						this.editingReservation = reservation;
 						this.isModalOpen = true;
 				},
-				getNewData(type){
+				getNewData(type) {
 						this.status = type;
-
-						if(type==='all'){
-							this.$inertia.get(`/admin/reservations`);
-							return;
-					}
-					this.$inertia.get(`/admin/reservations?status=`+type);
+						if (type === 'all') {
+								this.$inertia.get(`/admin/reservations`);
+								return;
+						}
+						this.$inertia.get(`/admin/reservations?status=` + type);
 				},
 		},
 }

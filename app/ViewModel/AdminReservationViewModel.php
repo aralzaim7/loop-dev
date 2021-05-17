@@ -15,7 +15,6 @@ class AdminReservationViewModel
     {
         return [
             'reservations' => $this->formatReservation($allReservations),
-            'reservationCategories' => ReservationCategory::all(),
         ];
     }
 

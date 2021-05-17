@@ -136,6 +136,7 @@ const adminLinks = [
 		{name: 'Dashboard', href: '/admin/dashboard'},
 		{name: 'Reservation', href: '/my-reservations'},
 		{name: 'All Reservations ', href: '/admin/reservations'},
+		{name: 'Reservation Users ', href: '/admin/reservation-users'},
 ];
 export default {
 		components: {
@@ -155,11 +156,7 @@ export default {
 		data() {
 				return {
 						open: false,
-						// navigation: [
-						// 		{name: 'Dashboard', href: '/dashboard'},
-						// 		{name: 'Reservation', href: '/my-reservations'},
-						// 		{name: 'All Reservations ', href: '/admin/reservations'},
-						// ]
+
 				}
 		},
 		computed: {
