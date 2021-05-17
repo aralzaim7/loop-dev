@@ -1,8 +1,24 @@
 <template>
 		<div>
-				<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 bg-gray-lightest mb-2" style="padding-top: 1rem;">
-						<h1 class="mb-2 font-bold text-3xl">All Reservations Page</h1>
+				<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 bg-gray-lightest mb-2 d-flex " style="padding-top: 1rem;">
+						<div class="d-flex">
+								<h1 class="mb-2 font-bold text-3xl">All Reservations Page</h1>
+								<ul class="list-reset flex border-b">
+										<li class="mr-1">
+												<button @click="getNewData('all')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+												        :class="status === 'all' ? 'border-l border-t border-r -mb-px' : ''">Approved</button>
+										</li>
+										<li class="mr-1">
+												<button @click="getNewData('pending')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+																:class="status === 'pending' ? 'border-l border-t border-r -mb-px' : ''">Pending</button>
+										</li>
+										<li class="mr-1">
+												<button @click="getNewData('approved')" class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
+												        :class="status === 'approved' ? 'border-l border-t border-r -mb-px' : ''">Approved</button>
+										</li>
 
+								</ul>
+						</div>
 						<div class="bg-white rounded-md shadow overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
 										<tr class="text-left font-bold">
@@ -96,7 +112,8 @@ export default {
 		data() {
 				return {
 						isModalOpen: false,
-						editingReservation: null
+						editingReservation: null,
+						status:new URL(window.location.href).searchParams.get('status') ? new URL(window.location.href).searchParams.get('status') : 'all',
 				}
 		},
 
@@ -108,6 +125,15 @@ export default {
 				changeStatusClicked(reservation) {
 						this.editingReservation = reservation;
 						this.isModalOpen = true;
+				},
+				getNewData(type){
+						this.status = type;
+
+						if(type==='all'){
+							this.$inertia.get(`/admin/reservations`);
+							return;
+					}
+					this.$inertia.get(`/admin/reservations?status=`+type);
 				},
 		},
 }
