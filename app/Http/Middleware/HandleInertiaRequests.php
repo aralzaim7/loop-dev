@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
             'user' => $request->user() ? [
                 'id' => $request->user()->id,
                 'first_name' => $request->user()->first_name,
+                'is_admin' => $request->user()->is_admin,
             ] : null,
             'flash' => function () use ($request) {
                 return [

@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DashboardController extends Controller
+class AdminDashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboard')->with([
+        return Inertia::render('Admin/Dashboard')->with([
             //'user' => $user,
         ]);
     }

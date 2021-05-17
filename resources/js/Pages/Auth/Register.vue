@@ -48,9 +48,9 @@
 																<div class="col-span-6 sm:col-span-3">
 																		<select-input v-model="form.country" :error="form.errors.country"
 																		              label="Country">
-																				<option value="cy">Cyprus</option>
-																				<option value="uk">United Kingdom</option>
-																				<option value="tr">Turkey</option>
+																				<option value="CY">Cyprus</option>
+																				<option value="UK">United Kingdom</option>
+																				<option value="TR">Turkey</option>
 																		</select-input>
 
 																</div>

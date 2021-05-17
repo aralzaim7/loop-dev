@@ -28,5 +28,6 @@ export default {
 						this.$refs.input.select()
 				},
 		},
+		emits: ['update:modelValue'],
 }
 </script>

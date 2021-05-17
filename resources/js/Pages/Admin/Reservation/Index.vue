@@ -1,27 +1,17 @@
 <template>
 		<div>
-				<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 bg-gray-lightest pb-8" style="padding-top: 1rem;">
-						<h1 class="mb-8 font-bold text-3xl">Reservations Page</h1>
-						<div class="mb-6 flex justify-between items-center">
-								<button
-										@click="isModalOpen = true"
-										class="focus:outline-none bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-										Create new reservation
-								</button>
-						</div>
+				<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 bg-gray-lightest mb-2" style="padding-top: 1rem;">
+						<h1 class="mb-2 font-bold text-3xl">All Reservations Page</h1>
 
-						<div class="mb-6 flex justify-between items-center">
-
-						</div>
 						<div class="bg-white rounded-md shadow overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
 										<tr class="text-left font-bold">
 												<th class="px-6 pt-6 pb-4">Reservation title</th>
+												<th class="px-6 pt-6 pb-4">Owner</th>
 												<th class="px-6 pt-6 pb-4">Category</th>
 												<th class="px-6 pt-6 pb-4">Room type</th>
 												<th class="px-6 pt-6 pb-4">Reservation time</th>
-												<th class="px-6 pt-6 pb-4">User</th>
-												<th class="px-6 pt-6 pb-4">Phone</th>
+												<th class="px-6 pt-6 pb-4">Status</th>
 												<th class="px-6 pt-6 pb-4">Created</th>
 												<th class="px-6 pt-6 pb-4">Process</th>
 										</tr>
@@ -30,39 +20,35 @@
 												<td class="border-t px-6 py-4 ">
 														{{ reservation.title }}
 												</td>
+
+												<td class="border-t px-6 py-4 " v-html="reservation.user_info">
+												</td>
+
 												<td class="border-t px-6 py-4 ">
 														{{ reservation.category.name }}
 												</td>
+
 												<td class="border-t px-6 py-4 ">
 														{{ reservation.room_type }}
 												</td>
 
 												<td class="border-t px-6 py-4" v-html="reservation.readable_reservation_time">
-
-												</td>
-
-												<td class="border-t px-6 py-4">
-														{{ reservation.user.full_name }}
-														{{ ' ' }}
-														<ShieldCheckIcon v-if="reservation.user.is_admin" class="block h-4 w-4 inline-block"/>
 												</td>
 
 												<td class="border-t px-6 py-4 ">
-														{{ reservation.user.phone }}
+														{{ reservation.status }}
 												</td>
 
 												<td class="border-t px-6 py-4 ">
 														{{ reservation.readable_creation_date }}
 												</td>
+
 												<td class="border-t px-6 py-4 space-x-1">
-														<button @click="editReservationClicked(reservation)"
+														<button @click="changeStatusClicked(reservation)"
 														        class="focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-1 px-2 text-sm rounded">
-																Edit
+																Change Status
 														</button>
-														<button @click="deleteReservationClicked(reservation.id)"
-														        class="focus:outline-none bg-red-500 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
-																Delete
-														</button>
+
 												</td>
 										</tr>
 										<tr v-if="reservations.data.length === 0">
@@ -78,7 +64,8 @@
 						@close-modal="closeModal()"
 						:open="isModalOpen"
 						:reservation="editingReservation"
-						:categories="reservation_categories"
+						:categories="reservationCategories"
+						v-if="isModalOpen"
 				>
 				</reservation-modal>
 		</div>
@@ -87,7 +74,7 @@
 <script>
 import Layout from '@/Layouts/Layout';
 import {ShieldCheckIcon} from '@heroicons/vue/outline'
-import ReservationModal from "./ReservationModal";
+import ReservationModal from "./AdminReservationModal";
 import Pagination from "@/Shared/Pagination";
 import PaginationLeft from "@/Shared/PaginationLeft";
 
@@ -96,7 +83,7 @@ export default {
 		layout: Layout,
 		props: {
 				reservations: Object,
-				reservation_categories: Object
+				reservationCategories: Object
 		},
 		computed:
 				{},
@@ -118,16 +105,10 @@ export default {
 						this.isModalOpen = false;
 						this.editingReservation = null;
 				},
-				editReservationClicked(reservation) {
+				changeStatusClicked(reservation) {
 						this.editingReservation = reservation;
 						this.isModalOpen = true;
-				}
-				,
-				deleteReservationClicked(reservation_id) {
-						this.$inertia.delete(`/reservations/${reservation_id}`, {
-								onBefore: () => confirm('Are you sure you want to delete this reservation?'),
-						})
-				}
+				},
 		},
 }
 </script>

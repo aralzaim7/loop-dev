@@ -13,27 +13,27 @@
 								<XIcon class="block h-6 w-6"/>
 						</button>
 				</div>
-				<form @submit.prevent="createReservation">
-						<div class="shadow overflow-hidden sm:rounded-md">
+				<form @submit.prevent="!reservation ? createReservation() : editReservation(reservation.id)">
+						<div class="shadow overflow-visible sm:rounded-md">
 								<div class="px-4 py-5 bg-gray-100 sm:p-6">
 										<div class="grid grid-cols-6 gap-6">
 												<div class="col-span-6 sm:col-span-3">
-														<text-input v-model="form.title" :error="form.errors.title"
-														            :model-value="reservation?.title"
+														<text-input v-model="form.title"
+														            :error="form.errors.title"
 														            label="Title"/>
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
 
 												<div class="col-span-6 sm:col-span-3">
-														<select-input v-model="form.category_id" :error="form.errors.category_id"
-														              :model-value="reservation?.category_id"
+														<select-input v-model="form.category_id"
+														              :error="form.errors.category_id"
 														              label="Category">
 																<option v-for="category in categories" :value="category.id">{{ category.name }}</option>
 														</select-input>
 												</div>
 												<div class="col-span-6 sm:col-span-3">
-														<select-input v-model="form.room_type" :error="form.errors.room_type"
-														              :model-value="reservation?.room_type"
+														<select-input v-model="form.room_type"
+														              :error="form.errors.room_type"
 														              label="Room type">
 																<option value="terrace">Terrace</option>
 																<option value="common">Common place</option>
@@ -43,19 +43,27 @@
 												<div class="col-span-6 sm:col-span-3">
 
 														<datepicker-input v-model="form.reservation_date"
+														                  :error="form.errors.reservation_date"
 														                  label="Date"/>
 
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
 
 												<div class="col-span-6 sm:col-span-3">
-														<text-input type="time" :min="startTime" :max="endTime" :step="timeInterval"
+														<text-input type="time"
+														            :min="startTime"
+														            :max="endTime"
+														            :step="timeInterval"
 														            v-model="form.reservation_start_time"
 														            :error="form.errors.reservation_start_time" label="Start time"/>
 												</div>
 
 												<div class="col-span-6 sm:col-span-3">
-														<text-input type="time" :min="startTime+1" :max="endTime+1" :step="timeInterval"
+														<text-input type="time"
+														            format="H:i"
+														            :min="startTime+1"
+														            :max="endTime+1"
+														            :step="timeInterval"
 														            v-model="form.reservation_end_time"
 														            :error="form.errors.reservation_end_time"
 														            label="End time"/>
@@ -103,12 +111,12 @@ export default {
 		data() {
 				return {
 						form: this.$inertia.form({
-								title: null,
-								category_id: '',
-								room_type: '',
-								reservation_date: new Date(),
-								reservation_start_time: null,
-								reservation_end_time: null,
+								title: this.reservation?.title,
+								category_id: this.reservation?.category_id,
+								room_type: this.reservation?.room_type,
+								reservation_date: this.reservation ? new Date(this.reservation.reservation_date) : new Date(),
+								reservation_start_time: this.reservation?.reservation_start_time,
+								reservation_end_time: this.reservation?.reservation_end_time,
 						}),
 						startTime: "09:00",
 						endTime: "17:00",
@@ -120,14 +128,46 @@ export default {
 
 		methods: {
 				createReservation() {
-						this.form.post('/reservations', {
-								onSuccess: () => {
-										this.closeModal();
-								}
-						})
+						this.form
+								.transform((data) => ({
+										...data,
+										reservation_date: this.formatDate(data.reservation_date),
+								}))
+								.post('/my-reservations', {
+										onSuccess: () => {
+												this.closeModal();
+										}
+								})
+				},
+				editReservation(reservationId) {
+						this.form
+								.transform((data) => ({
+										...data,
+										reservation_date: this.formatDate(data.reservation_date),
+								}))
+								.put(`/my-reservations/${reservationId}`, {
+										onSuccess: () => {
+												this.closeModal();
+										}
+								})
+
 				},
 				closeModal() {
 						this.$emit('close-modal');
+				},
+
+				formatDate(date) {
+						var d = new Date(date),
+								month = '' + (d.getMonth() + 1),
+								day = '' + d.getDate(),
+								year = d.getFullYear();
+
+						if (month.length < 2)
+								month = '0' + month;
+						if (day.length < 2)
+								day = '0' + day;
+
+						return [year, month, day].join('-');
 				}
 		},
 }

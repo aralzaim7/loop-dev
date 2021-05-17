@@ -118,16 +118,28 @@
 				</div>
 
 		</Disclosure>
+		<FlashMessage/>
 		<slot/>
 </template>
 
 <script>
-import {ref} from 'vue'
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {BellIcon, MenuIcon, XIcon, ChevronDownIcon} from '@heroicons/vue/outline'
+import FlashMessage from "@/Shared/FlashMessage";
 
+
+const userLinks = [
+		{name: 'Dashboard', href: '/dashboard'},
+		{name: 'Reservation', href: '/my-reservations'},
+];
+const adminLinks = [
+		{name: 'Dashboard', href: '/admin/dashboard'},
+		{name: 'Reservation', href: '/my-reservations'},
+		{name: 'All Reservations ', href: '/admin/reservations'},
+];
 export default {
 		components: {
+				FlashMessage,
 				Disclosure,
 				DisclosureButton,
 				DisclosurePanel,
@@ -143,20 +155,25 @@ export default {
 		data() {
 				return {
 						open: false,
-						navigation: [
-								{name: 'Dashboard', href: '/dashboard'},
-								{name: 'Reservation', href: '/reservation'},
-						]
+						// navigation: [
+						// 		{name: 'Dashboard', href: '/dashboard'},
+						// 		{name: 'Reservation', href: '/my-reservations'},
+						// 		{name: 'All Reservations ', href: '/admin/reservations'},
+						// ]
+				}
+		},
+		computed: {
+				navigation() {
+						return this.$page.props.user?.is_admin ? adminLinks : userLinks;
 				}
 		},
 		methods: {
 				changeOpen: function () {
-						console.log(this.open);
 						this.open = !this.open;
 				},
 				checkCurrentPage: function (currentPage) {
 
-						return window.location.pathname.includes(currentPage);
+						return window.location.pathname === (currentPage);
 				}
 		}
 }

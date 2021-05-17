@@ -15,28 +15,18 @@ class Reservation extends Model
         'title',
         'category_id',
         'room_type',
+        'status',
         'reservation_date',
         'reservation_start_time',
         'reservation_end_time',
-        'user_id'
+        'user_id',
+
     ];
 
-    protected $appends = [
-        'readable_reservation_time',
-        'readable_creation_date'
+
+    protected $casts = [
+        'reservation_date' => 'datetime:Y-m-d H:i:s',
     ];
-
-    public function getReadableReservationTimeAttribute(): string
-    {
-        $reservationStart = Carbon::parse($this->reservation_start_time)->format('H:i');
-        $reservationEnd  = Carbon::parse($this->reservation_end_time)->format('H:i');
-        return "<span>{$this->reservation_date} <br/> {$reservationStart} - {$reservationEnd}</span>";
-    }
-
-    public function getReadableCreationDateAttribute(): string
-    {
-        return $this->created_at->diffForHumans();
-    }
 
     public function category()
     {

@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminReservationController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Guest\GuestDashboardController;
+use App\Http\Controllers\Guest\GuestReservationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,13 +28,18 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [UserController::class, 'index']);
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [GuestDashboardController::class, 'index']);
 
-    Route::get('/reservations', [ReservationController::class, 'index']);
-    Route::post('/reservations', [ReservationController::class, 'store']);
-    //Route::put('/reservations', [ReservationController::class, 'update']);
-    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
+    Route::get('/my-reservations', [GuestReservationController::class, 'index']);
+    Route::post('/my-reservations', [GuestReservationController::class, 'store']);
+    Route::put('/my-reservations/{reservation}', [GuestReservationController::class, 'update']);
+    Route::delete('/my-reservations/{reservation}', [GuestReservationController::class, 'destroy']);
 
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+        Route::get('/reservations', [AdminReservationController::class, 'index']);
+        Route::put('/reservations/{reservation}', [AdminReservationController::class, 'update']);
+    });
 });
 
 

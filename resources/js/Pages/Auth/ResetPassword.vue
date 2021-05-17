@@ -53,15 +53,18 @@ import Layout from '@/Layouts/Layout'
 import TextInput from '@/Shared/TextInput'
 
 export default {
-		name: 'ResetPassword',
-		components: {
-				TextInput,
-		},
-		layout: Layout,
 		props: {
 				email: String,
 				token: String,
 		},
+
+		name: 'ResetPassword',
+
+		components: {
+				TextInput,
+		},
+		layout: Layout,
+
 		data() {
 				return {
 						form: this.$inertia.form({
