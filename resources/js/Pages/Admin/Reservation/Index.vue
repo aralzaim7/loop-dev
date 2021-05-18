@@ -7,7 +7,7 @@
 										<li class="mr-1">
 												<button @click="getNewData('all')"
 												        class="bg-white inline-block py-2 px-4 font-semibold outline-none focus:outline-none"
-												        :class="status === 'all' ? 'border-l border-t border-r -mb-px' : ''">Approved
+												        :class="!status ? 'border-l border-t border-r -mb-px' : ''">All
 												</button>
 										</li>
 										<li class="mr-1">
@@ -67,8 +67,14 @@
 
 												<td class="border-t px-6 py-4 space-x-1">
 														<button @click="changeStatusClicked(reservation)"
+														        v-if="reservation.status === 'pending'"
 														        class="focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-1 px-2 text-sm rounded">
 																Change Status
+														</button>
+
+														<button v-else
+														        class="focus:outline-none bg-gray-300 text-white py-1 px-2 text-sm rounded">
+																Process done
 														</button>
 
 												</td>
@@ -79,7 +85,7 @@
 								</table>
 								<!--								<pagination class="m-2 pb-4"/>-->
 								<pagination-left v-if="reservations.data.length !== 0" class="m-2 pb-4"
-								                 :reservations="reservations"/>
+								                 :data="reservations"/>
 						</div>
 				</div>
 				<reservation-modal
@@ -105,7 +111,7 @@ export default {
 		layout: Layout,
 		props: {
 				reservations: Object,
-				reservationCategories: Object
+				status: String
 		},
 		components: {
 				PaginationLeft,
@@ -117,10 +123,8 @@ export default {
 				return {
 						isModalOpen: false,
 						editingReservation: null,
-						status: new URL(window.location.href).searchParams.get('status') ? new URL(window.location.href).searchParams.get('status') : 'all',
 				}
 		},
-
 		methods: {
 				closeModal() {
 						this.isModalOpen = false;
@@ -131,7 +135,6 @@ export default {
 						this.isModalOpen = true;
 				},
 				getNewData(type) {
-						this.status = type;
 						if (type === 'all') {
 								this.$inertia.get(`/admin/reservations`);
 								return;

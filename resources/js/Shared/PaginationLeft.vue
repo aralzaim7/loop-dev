@@ -16,22 +16,22 @@
 								<p class="text-sm text-gray-700">
 										Showing
 										{{ ' ' }}
-										<span class="font-medium">{{ reservations.from }}</span>
+										<span class="font-medium">{{ data.from }}</span>
 										{{ ' ' }}
 										to
 										{{ ' ' }}
-										<span class="font-medium">{{ reservations.to }}</span>
+										<span class="font-medium">{{ data.to }}</span>
 										{{ ' ' }}
 										of
 										{{ ' ' }}
-										<span class="font-medium">{{ reservations.total }}</span>
+										<span class="font-medium">{{ data.total }}</span>
 										{{ ' ' }}
 										results
 								</p>
 						</div>
 						<div>
 								<nav class="relative z-0 inline-flex rounded-md -space-x-px" aria-label="Pagination">
-										<inertia-link v-for="link in reservations.links"
+										<inertia-link v-for="link in data.links"
 										              :href="!link.url ? '' : link.url "
 										              v-html="link.label"
 										              class="px-2"
@@ -77,7 +77,7 @@ import {ChevronLeftIcon, ChevronRightIcon} from '@heroicons/vue/solid'
 
 export default {
 		props: {
-				reservations: {
+				data: {
 						type: Object,
 						required: true
 				},

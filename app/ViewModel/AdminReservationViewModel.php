@@ -4,6 +4,7 @@
 namespace App\ViewModel;
 
 
+use App\Models\Reservation;
 use App\Models\ReservationCategory;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,14 +12,27 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class AdminReservationViewModel
 {
 
-    public function present(LengthAwarePaginator $allReservations): array
+    public function present($request): array
     {
+
+        $status=$request->status;
+
+        $query = Reservation::query()->orderBy('reservation_date', 'asc');
+
+        if($status) {
+            $query->where('status', $status);
+        }
+
+        $allReservations = $query->paginate(5);
+
+        $allReservations->load(['user', 'category']);
         return [
+            'status' => $status,
             'reservations' => $this->formatReservation($allReservations),
         ];
     }
 
-    private function formatReservation(LengthAwarePaginator $allReservations)
+    private function formatReservation(LengthAwarePaginator $allReservations): LengthAwarePaginator
     {
         $allReservationCollection = $allReservations->getCollection()
             ->map(function ($reservation) {

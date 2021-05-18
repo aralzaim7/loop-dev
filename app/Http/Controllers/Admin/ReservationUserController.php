@@ -16,7 +16,7 @@ class ReservationUserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::where('id', '<>', $request->user()->id)->whereHas('reservations')->paginate(5);
+        $users = User::where('id', '!=', $request->user()->id)->whereHas('reservations')->paginate(10);
 
         $reservationUserViewModel = app(ReservationUserViewModel::class)->present($users);
 

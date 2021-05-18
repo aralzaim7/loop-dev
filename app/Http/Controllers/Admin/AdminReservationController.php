@@ -14,25 +14,14 @@ class AdminReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $status=$request->status;
-
-        $query = Reservation::orderBy('reservation_date', 'asc');
-
-        if($status) {
-            $query->where('status', $status);
-        }
-
-        $reservations = $query->paginate(5);
-
-        $reservations->load(['user', 'category']);
-
-        $adminReservationViewModel = app(AdminReservationViewModel::class)->present($reservations);
+        $adminReservationViewModel = app(AdminReservationViewModel::class)->present($request);
 
         return Inertia::render('Admin/Reservation/Index')->with($adminReservationViewModel);
     }
 
     public function update(UpdateRespondReservationRequest $request,  Reservation $reservation)
     {
+        //update edilinca varolan url e gitsin
         $reservation->update($request->validated());
         return redirect('/admin/reservations')->with('success', 'Reservation status updated successfully.');
     }

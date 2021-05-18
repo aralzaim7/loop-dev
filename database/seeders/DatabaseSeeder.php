@@ -28,14 +28,18 @@ class DatabaseSeeder extends Seeder
             'city' => 'Lefkosa',
             'is_admin' => true
 
-        ])->has(Reservation::factory()->count(5))
+        ])->has(Reservation::factory()->count(25))
             ->create();
 
         User::factory([
             'email' => 'test@gmail.com',
             'password' => Hash::make('test'),
             'is_admin' => false
-        ])->has(Reservation::factory()->count(5))
+        ])->has(Reservation::factory()->count(25))
+            ->create();
+
+        User::factory()->count(25)
+            ->has(Reservation::factory()->count(5))
             ->create();
 
 

@@ -63,7 +63,7 @@
 								</table>
 								<!--								<pagination class="m-2 pb-4"/>-->
 								<pagination-left v-if="reservations.data.length !== 0" class="m-2 pb-4"
-								                 :reservations="reservations"/>
+								                 :data="reservations"/>
 						</div>
 				</div>
 				<reservation-modal
