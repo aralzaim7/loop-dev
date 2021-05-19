@@ -21,9 +21,8 @@ class AdminReservationController extends Controller
 
     public function update(UpdateRespondReservationRequest $request,  Reservation $reservation)
     {
-        //update edilinca varolan url e gitsin
         $reservation->update($request->validated());
-        return redirect('/admin/reservations')->with('success', 'Reservation status updated successfully.');
+        return redirect()->back()->with('success', 'Reservation status updated successfully.');
     }
 
 }

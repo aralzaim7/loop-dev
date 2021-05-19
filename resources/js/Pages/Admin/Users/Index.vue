@@ -5,9 +5,10 @@
 								<h1 class="mb-2 font-bold text-3xl">Reservation Users</h1>
 						</div>
 						<div class="mb-2 flex justify-end items-center">
-								<dropdown-buttons title="Bulk Actions"
-								                  :buttons="buttonList"
-								                  @action-clicked="actionClicked()"
+								<users-dropdown-buttons
+										@send-email="sendEmail()"
+										@other-action="otherAction()"
+										@another-action="anotherAction()"
 								/>
 							</div>
 						<div class="bg-white rounded-md shadow overflow-x-auto">
@@ -55,52 +56,35 @@
 
 <script>
 import Layout from "@/Layouts/Layout";
-import {MailIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/vue/outline'
 import DropdownButtons from "@/Shared/DropdownButtons";
 import PaginationLeft from "@/Shared/PaginationLeft";
+import UsersDropdownButtons from "@/Shared/UsersDropdownButtons";
 
 
 export default {
 		props: {
 				users: {type: Object, required: true},
 		},
-		data() {
-				return {
-						isActionsOpen: false,
-						buttonList: [
-								{
-										title: 'Send E-mail',
-										icon: 'E-mail Icon',
-										action: 'sendEmail',
-								},
-								{
-										title: 'Other Button',
-										icon: 'Other Button Icon',
-										action: 'otherAction',
-								},
-								{
-										title: 'Other Button',
-										icon: 'Other Button Icon',
-										action: 'otherAction',
-								}
-						],
-				}
-		},
-		methods: {
-				actionClicked() {
-						alert('send email clicked');
-				},
 
-		},
 		components: {
+				UsersDropdownButtons,
 				PaginationLeft,
 				DropdownButtons,
-				MailIcon,
-				ChevronDownIcon,
-				ChevronUpIcon,
 		},
 		name: "ReservationUsers",
 		layout: Layout,
+
+		methods: {
+				sendEmail() {
+					console.log('sendEmail')
+				},
+				otherAction() {
+						console.log('otherAction')
+				},
+				anotherAction() {
+						console.log('anotherAction')
+				}
+		},
 
 
 }

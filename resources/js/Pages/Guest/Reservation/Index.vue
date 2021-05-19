@@ -114,8 +114,7 @@ export default {
 				editReservationClicked(reservation) {
 						this.editingReservation = reservation;
 						this.isModalOpen = true;
-				}
-				,
+				},
 				deleteReservationClicked(reservationId) {
 						this.$inertia.delete(`/my-reservations/${reservationId}`, {
 								onBefore: () => confirm('Are you sure you want to delete this reservation?'),

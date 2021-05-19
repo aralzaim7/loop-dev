@@ -111,14 +111,12 @@ export default {
 		emits: ['close-modal'],
 
 		methods: {
-
 				editReservationStatus(reservationId) {
 						this.form.put(`/admin/reservations/${reservationId}`, {
 								onSuccess: () => {
 										this.closeModal();
 								}
 						})
-
 				},
 				closeModal() {
 						this.$emit('close-modal');

@@ -1,6 +1,7 @@
 <template>
 		<div class="relative">
 				<button
+						v-click-away="onClickAway"
 						@click="toggleDropdown()"
 						class="flex justify-center items-center focus:outline-none bg-white hover:bg-gray-100 text-black border border-gray-400 text-sm font-bold py-2 px-4 rounded-md">
 						{{ title }}
@@ -10,27 +11,21 @@
 				</button>
 				<div v-if="isDropdownOpen"
 				     class="absolute bg-white w-full rounded-md shadow-md py-2">
-						<button
-								v-for="button in buttons"
-								@click="$emit('action-clicked')"
-								class="p-1 hover:bg-gray-200 outline-none focus:outline-none text-gray-600 flex justify-center items-center w-full">
-								<MailIcon class="block h-4 w-4"/>
-								{{ ' ' }}
-								<span>{{ button.title }}</span>
-						</button>
+						<slot name="buttons">
+
+						</slot>
 				</div>
 		</div>
 </template>
 
 <script>
 
-import {MailIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/vue/outline'
+import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/vue/outline'
 
 export default {
 
 		props: {
 				title: {type: String, required: true},
-				buttons: {type: Array, required: true},
 		},
 		data() {
 				return {
@@ -38,6 +33,9 @@ export default {
 				}
 		},
 		methods: {
+				onClickAway(){
+					this.closeDropDown()
+				},
 				toggleDropdown() {
 						if (this.isDropdownOpen) {
 								this.closeDropDown();
@@ -54,7 +52,7 @@ export default {
 		},
 		emits: ['action-clicked'],
 
-		components: {MailIcon, ChevronDownIcon, ChevronUpIcon},
+		components: {ChevronDownIcon, ChevronUpIcon},
 
 		name: "DropdownButtons"
 }
