@@ -28,15 +28,17 @@
 														<select-input v-model="form.category_id"
 														              :error="form.errors.category_id"
 														              label="Category">
-																<option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+																<option v-for="category in categories"
+																        :value="category.id">{{ category.name }}
+																</option>
 														</select-input>
 												</div>
 												<div class="col-span-6 sm:col-span-3">
-														<select-input v-model="form.room_type"
-														              :error="form.errors.room_type"
-														              label="Room type">
-																<option value="terrace">Terrace</option>
-																<option value="common">Common place</option>
+														<select-input
+																v-model="form.room_type"
+																:error="form.errors.room_type"
+																label="Room type">
+																<option v-for="roomType in roomTypes" :value="roomType.id">{{ roomType.name }}</option>
 														</select-input>
 												</div>
 
@@ -98,6 +100,7 @@ export default {
 				open: {Boolean, required: true},
 				categories: {Object, required: true},
 				reservation: {Object, required: true},
+				roomTypes: {Object, required: true},
 		},
 		components: {
 				DatepickerInput,

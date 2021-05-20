@@ -71,6 +71,7 @@
 						:open="isModalOpen"
 						:reservation="editingReservation"
 						:categories="reservationCategories"
+						:roomTypes="reservationRoomTypes"
 						v-if="isModalOpen"
 				>
 				</reservation-modal>
@@ -89,7 +90,8 @@ export default {
 		layout: Layout,
 		props: {
 				reservations: Object,
-				reservationCategories: Object
+				reservationCategories: Object,
+				reservationRoomTypes:Object,
 		},
 		computed:
 				{},

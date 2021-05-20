@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\OpeningHour;
 use App\Models\Reservation;
 use App\Models\ReservationCategory;
+use App\Models\RoomType;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -28,20 +30,18 @@ class DatabaseSeeder extends Seeder
             'city' => 'Lefkosa',
             'is_admin' => true
 
-        ])->has(Reservation::factory()->count(25))
+        ])->has(Reservation::factory()->count(5))
             ->create();
 
         User::factory([
             'email' => 'test@gmail.com',
             'password' => Hash::make('test'),
             'is_admin' => false
-        ])->has(Reservation::factory()->count(25))
+        ])->has(Reservation::factory()->count(5))
             ->create();
 
-        User::factory()->count(25)
-            ->has(Reservation::factory()->count(5))
+        User::factory()->count(5)
+            ->has(Reservation::factory()->count(1))
             ->create();
-
-
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOpenningHoursTable extends Migration
+class CreateRoomTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateOpenningHoursTable extends Migration
      */
     public function up()
     {
-        Schema::create('openning_hours', function (Blueprint $table) {
+        Schema::create('room_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_type_id');
-            $table->string('day');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateOpenningHoursTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('openning_hours');
+        Schema::dropIfExists('room_types');
     }
 }

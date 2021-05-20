@@ -25,7 +25,8 @@ class AdminReservationViewModel
 
         $allReservations = $query->paginate(5);
 
-        $allReservations->load(['user', 'category']);
+        $allReservations->load(['user', 'category', 'roomType']);
+        
         return [
             'status' => $status,
             'reservations' => $this->formatReservation($allReservations),
@@ -47,7 +48,7 @@ class AdminReservationViewModel
                 'user_info' => "<span> {$reservation->user->full_name} <br/> {$reservation->user->email} <br/> {$reservation->user->phone}</span>",
                 'category_name' => $reservation->category->name,
                 'title' => $reservation->title,
-                'room_type' => $reservation->room_type,
+                'room_type_name' => $reservation->roomType->name,
                 'status' => $reservation->status,
                 'readable_creation_date' => $reservation->created_at->diffForHumans(),
                 'readable_reservation_time' => "<span> {$reservation_date} <br/> {$reservation_start_time} - {$reservation_end_time}</span>",

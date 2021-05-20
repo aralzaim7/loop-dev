@@ -17,8 +17,8 @@ class CreateReservationsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('category_id');
+            $table->foreignId('room_type_id');
             $table->string('title');
-            $table->string('room_type');
             $table->date('reservation_date');
             $table->time('reservation_start_time');
             $table->time('reservation_end_time');

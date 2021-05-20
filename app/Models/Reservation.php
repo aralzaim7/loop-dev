@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +13,7 @@ class Reservation extends Model
     protected $fillable = [
         'title',
         'category_id',
-        'room_type',
+        'room_type_id',
         'status',
         'reservation_date',
         'reservation_start_time',
@@ -28,9 +27,14 @@ class Reservation extends Model
         'reservation_date' => 'datetime:Y-m-d H:i:s',
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(ReservationCategory::class);
+    }
+
+    public function roomType(): BelongsTo
+    {
+        return $this->belongsTo(RoomType::class);
     }
 
     public function user(): BelongsTo

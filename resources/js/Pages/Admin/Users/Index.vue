@@ -76,7 +76,9 @@ export default {
 
 		methods: {
 				sendEmail() {
-					console.log('sendEmail')
+					this.users.data.map((user)=>{
+							console.log(user.email);
+					})
 				},
 				otherAction() {
 						console.log('otherAction')

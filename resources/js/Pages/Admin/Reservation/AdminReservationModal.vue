@@ -35,7 +35,7 @@
 														<span class="text-sm font-bold">Room:</span>
 												</div>
 												<div class="col-span-6 sm:col-span-4">
-														<span class="text-sm">{{ reservation.room_type }}</span>
+														<span class="text-sm">{{ reservation.room_type_name }}</span>
 												</div>
 
 												<div class="col-span-6 sm:col-span-2">
