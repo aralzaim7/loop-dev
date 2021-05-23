@@ -27,8 +27,8 @@ class ReservationViewModel
     {
         $day = strtolower(Carbon::today()->englishDayOfWeek);
         $openingHours = OpeningHour::query()
-            ->where('day', '=', $day)
             ->with('roomType')
+            ->where('day', '=', $day)
             ->get();
 
     }
@@ -46,7 +46,8 @@ class ReservationViewModel
                     'id' => $reservation->id,
                     'category_id' => $reservation->category_id,
                     'title' => $reservation->title,
-                    'room_type' => $reservation->room_type,
+                    'room_type' => $reservation->roomType->id,
+                    'room_type_name' => $reservation->roomType->name,
                     'reservation_date' => $reservation_date,
                     'reservation_start_time' => $reservation_start_time,
                     'reservation_end_time' => $reservation_end_time,

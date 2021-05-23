@@ -31,7 +31,7 @@
 														{{ reservation.category.name }}
 												</td>
 												<td class="border-t px-6 py-4 ">
-														{{ reservation.room_type }}
+														{{ reservation.room_type_name }}
 												</td>
 
 												<td class="border-t px-6 py-4" v-html="reservation.readable_reservation_time">
@@ -47,14 +47,17 @@
 												</td>
 
 												<td class="border-t px-6 py-4 space-x-1">
-														<button @click="editReservationClicked(reservation)"
-														        class="focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-1 px-2 text-sm rounded">
-																Edit
-														</button>
-														<button @click="deleteReservationClicked(reservation.id)"
-														        class="focus:outline-none bg-red-500 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
-																Delete
-														</button>
+														<div v-if="reservation.status === 'pending'"
+														     class="grid grid-cols-2 gap-x-2">
+																<button @click="editReservationClicked(reservation)"
+																        class="col-span-1 focus:outline-none bg-yellow-300 hover:bg-yellow-700 text-white py-1 px-2 text-sm rounded">
+																		Edit
+																</button>
+																<button @click="deleteReservationClicked(reservation.id)"
+																        class="col-span-1 focus:outline-none bg-red-500 hover:bg-red-700 text-white py-1 px-2 text-sm rounded">
+																		Delete
+																</button>
+														</div>
 												</td>
 										</tr>
 										<tr v-if="reservations.data.length === 0">
@@ -91,7 +94,7 @@ export default {
 		props: {
 				reservations: Object,
 				reservationCategories: Object,
-				reservationRoomTypes:Object,
+				reservationRoomTypes: Object,
 		},
 		computed:
 				{},

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminReservationController;
 use App\Http\Controllers\Admin\ReservationUserController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Guest\AvailableReservationTimesController;
 use App\Http\Controllers\Guest\GuestDashboardController;
 use App\Http\Controllers\Guest\GuestReservationController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-reservations', [GuestReservationController::class, 'store']);
     Route::put('/my-reservations/{reservation}', [GuestReservationController::class, 'update']);
     Route::delete('/my-reservations/{reservation}', [GuestReservationController::class, 'destroy']);
+
+    Route::post('/reservation-helper', AvailableReservationTimesController::class);
+
 
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index']);

@@ -7,13 +7,16 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Models\Reservation;
 use App\ViewModel\ReservationViewModel;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class GuestReservationController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
-        $reservations = auth()->user()->reservations()->orderBy('reservation_date','asc')->paginate(5);
-
+        $reservations = auth()->user()->reservations()
+            ->with('roomType')
+            ->orderBy('reservation_date','asc')
+            ->paginate(5);
         $reservationViewModel= app(ReservationViewModel::class)->present($reservations);
 
         return Inertia::render('Guest/Reservation/Index')->with($reservationViewModel);
@@ -41,4 +44,5 @@ class GuestReservationController extends Controller
 
         return redirect('/my-reservations')->with('success', 'Reservation deleted successfully.');
     }
+
 }

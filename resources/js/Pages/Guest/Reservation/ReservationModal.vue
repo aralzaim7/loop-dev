@@ -36,6 +36,7 @@
 												<div class="col-span-6 sm:col-span-3">
 														<select-input
 																v-model="form.room_type"
+																@update:model-value="roomTypeChanged()"
 																:error="form.errors.room_type"
 																label="Room type">
 																<option v-for="roomType in roomTypes" :value="roomType.id">{{ roomType.name }}</option>
@@ -45,31 +46,44 @@
 												<div class="col-span-6 sm:col-span-3">
 
 														<datepicker-input v-model="form.reservation_date"
+														                  @update:model-value="getNewAvailableSlots()"
 														                  :error="form.errors.reservation_date"
 														                  label="Date"/>
 
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
 
-												<div class="col-span-6 sm:col-span-3">
-														<text-input type="time"
-														            :min="startTime"
-														            :max="endTime"
-														            :step="timeInterval"
-														            v-model="form.reservation_start_time"
-														            :error="form.errors.reservation_start_time" label="Start time"/>
+												<div class="col-span-6">
+														<div v-if="loading"
+														     class="flex justify-center items-center"
+														>
+																<loading-icon class="text-indigo-500 m-3"/>
+														</div>
+														<div v-else>
+																<div v-if="form.available_reservation_slots?.length > 0"
+																     class="grid grid-cols-4 gap-4">
+																		<div v-for="available_slot in form.available_reservation_slots"
+																		>
+
+																				<badged-checkbox-input
+																						:is-booked="available_slot.is_booked"
+																						:start-time="available_slot.start_time"
+																						:end-time="available_slot.end_time"
+																						:is-selected="slotStatus(available_slot)"
+																						@time-slot-clicked="slotSelected"
+																				>
+																				</badged-checkbox-input>
+																		</div>
+																</div>
+																<div v-else-if="!form.room_type">
+																		Select a room type and date to see available time slots.
+																</div>
+																<div v-else-if="form.available_reservation_slots?.length === 0">
+																		Selected room is out of service on selected date.
+																</div>
+														</div>
 												</div>
 
-												<div class="col-span-6 sm:col-span-3">
-														<text-input type="time"
-														            format="H:i"
-														            :min="startTime+1"
-														            :max="endTime+1"
-														            :step="timeInterval"
-														            v-model="form.reservation_end_time"
-														            :error="form.errors.reservation_end_time"
-														            label="End time"/>
-												</div>
 										</div>
 								</div>
 								<div class="px-4 py-3 bg-gray-50 text-center sm:px-6">
@@ -94,6 +108,9 @@ import TextareaInput from "@/Shared/TextareaInput"
 import SelectInput from "@/Shared/SelectInput";
 import LoadingButton from "@/Shared/LoadingButton";
 import DatepickerInput from "@/Shared/DatepickerInput";
+import CheckboxInput from "@/Shared/CheckboxInput";
+import LoadingIcon from "@/Shared/LoadingIcon";
+import BadgedCheckboxInput from "@/Shared/BadgedCheckboxInput";
 
 export default {
 		props: {
@@ -103,6 +120,8 @@ export default {
 				roomTypes: {Object, required: true},
 		},
 		components: {
+				BadgedCheckboxInput,
+				LoadingIcon,
 				DatepickerInput,
 				ModalBase,
 				XIcon,
@@ -110,26 +129,70 @@ export default {
 				TextareaInput,
 				SelectInput,
 				LoadingButton,
+				CheckboxInput
 		},
+		mounted() {
+				this.form.reservation_date = this.reservation ? new Date(this.reservation.reservation_date) : new Date();
+		},
+		// watch: {
+		// 		'form.room_type': {
+		// 				handler(value) {
+		// 						//do something
+		// 						console.log(value);
+		// 				}
+		// 		},
+		// },
 		data() {
 				return {
 						form: this.$inertia.form({
 								title: this.reservation?.title,
 								category_id: this.reservation?.category_id,
 								room_type: this.reservation?.room_type,
-								reservation_date: this.reservation ? new Date(this.reservation.reservation_date) : new Date(),
-								reservation_start_time: this.reservation?.reservation_start_time,
-								reservation_end_time: this.reservation?.reservation_end_time,
+								available_reservation_slots: null,
+								selected_time_slots: this.reservation?.selected_time_slots,
 						}),
-						startTime: "09:00",
-						endTime: "17:00",
-						timeInterval: "1800"
-
+						selectedSlots: [],
+						loading: false,
 				}
 		},
 		emits: ['close-modal'],
 
 		methods: {
+				slotStatus(timeSlot) {
+						return this.selectedSlots.includes(`${timeSlot.start_time} - ${timeSlot.end_time}`);
+				},
+				slotSelected(object) {
+						if(!object.isSelected)
+						{
+								this.selectedSlots = this.selectedSlots.filter((item)=>object.slot !== item)
+
+								console.log(this.selectedSlots);
+								return
+						}
+						this.selectedSlots.push(object.slot)
+						console.log(this.selectedSlots);
+
+
+				},
+
+				getNewAvailableSlots() {
+						this.loading = true;
+						axios
+								.post('/reservation-helper', {
+										room_type: this.form.room_type,
+										date: this.formatDate(this.form.reservation_date)
+								})
+								.then(response => {
+										this.loading = false
+										this.form.available_reservation_slots = response.data
+								})
+								.catch(err => {
+										console.log(err);
+								});
+				},
+				roomTypeChanged() {
+						this.form.reservation_date = new Date();
+				},
 				createReservation() {
 						this.form
 								.transform((data) => ({

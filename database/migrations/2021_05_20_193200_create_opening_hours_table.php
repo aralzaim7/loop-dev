@@ -17,8 +17,9 @@ class CreateOpeningHoursTable extends Migration
             $table->id();
             $table->foreignId('room_type_id');
             $table->string('day');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->unique(['room_type_id', 'day']);
             $table->timestamps();
         });
     }

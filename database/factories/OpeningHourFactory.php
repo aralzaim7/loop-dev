@@ -28,4 +28,75 @@ class OpeningHourFactory extends Factory
             'end_time'=>'17:00'
         ];
     }
+
+    public function monday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'monday',
+                'end_time' => '12:00',
+            ];
+        });
+    }
+    public function tuesday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'tuesday',
+                'end_time' => '13:00',
+            ];
+        });
+    }
+
+    public function wednesday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'wednesday',
+                'end_time' => '14:00',
+            ];
+        });
+    }
+
+    public function thursday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'thursday',
+                'end_time' => '15:00',
+            ];
+        });
+    }
+
+    public function friday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'friday',
+                'end_time' => '16:00',
+            ];
+        });
+    }
+    public function saturday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'saturday',
+                'start_time' => null,
+                'end_time' => null,
+            ];
+        });
+    }
+    public function sunday(): OpeningHourFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'day' => 'sunday',
+                'start_time' => null,
+                'end_time' => null,
+            ];
+        });
+    }
+
+
 }

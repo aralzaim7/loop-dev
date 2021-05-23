@@ -41,14 +41,13 @@ class AdminReservationViewModel
             $reservation_date = $reservation->reservation_date->format('Y-m-d');
             $reservation_start_time = Carbon::parse($reservation->reservation_start_time)->format('H:i');
             $reservation_end_time = Carbon::parse($reservation->reservation_end_time)->format('H:i');
-
             return [
                 'id' => $reservation->id,
                 'username' => $reservation->user->full_name,
                 'user_info' => "<span> {$reservation->user->full_name} <br/> {$reservation->user->email} <br/> {$reservation->user->phone}</span>",
                 'category_name' => $reservation->category->name,
                 'title' => $reservation->title,
-                'room_type_name' => $reservation->roomType->name,
+                'room_type' => $reservation->roomType->name,
                 'status' => $reservation->status,
                 'readable_creation_date' => $reservation->created_at->diffForHumans(),
                 'readable_reservation_time' => "<span> {$reservation_date} <br/> {$reservation_start_time} - {$reservation_end_time}</span>",

@@ -29,7 +29,7 @@ class ReservationFactory extends Factory
             'user_id' => '1',
             'category_id' => ReservationCategory::factory(),
             'title' => $this->faker->text(20),
-            'room_type_id' => RoomType::factory()->has(OpeningHour::factory()->count(7)),
+            'room_type_id' => RoomType::factory(),
             'reservation_date' => $this->faker->dateTimeBetween('now','1 years')->format('Y-m-d'),
             'reservation_start_time' => $this->faker->time('H:i'),
             'reservation_end_time' => $this->faker->time('H:i'),
