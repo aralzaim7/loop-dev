@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\DateFormatArray;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,10 +28,10 @@ class StoreReservationRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'numeric', 'exists:reservation_categories,id'],
-            'room_type_id' => ['required', 'numeric','exists:room_types,id'],
+            'room_type_id' => ['required', 'numeric', 'exists:room_types,id'],
             'reservation_date' => ['required', 'date_format:Y-m-d'],
-            'reservation_start_time' => ['required', 'date_format:H:i'],
-            'reservation_end_time' => ['required', 'date_format:H:i'],
+            'selected_time_slots' => ['required', 'array'],
+            'selected_time_slots.*' => ['required', new DateFormatArray()],
         ];
     }
 }

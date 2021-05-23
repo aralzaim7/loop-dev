@@ -15,23 +15,45 @@ class GuestReservationController extends Controller
     {
         $reservations = auth()->user()->reservations()
             ->with('roomType')
-            ->orderBy('reservation_date','asc')
+            ->orderBy('reservation_date', 'asc')
             ->paginate(5);
-        $reservationViewModel= app(ReservationViewModel::class)->present($reservations);
+        $reservationViewModel = app(ReservationViewModel::class)->present($reservations);
 
         return Inertia::render('Guest/Reservation/Index')->with($reservationViewModel);
     }
 
     public function store(StoreReservationRequest $request)
     {
+        $selectedTimeSlots = $request->selected_time_slots;
+
+        $startTimes = collect();
+        $endTimes = collect();
+
+        foreach ($selectedTimeSlots as $timeSlot) {
+            $separatedTimeSlots = explode(' - ', $timeSlot);
+
+            $startTimes->push($separatedTimeSlots[0]);
+            $endTimes->push($separatedTimeSlots[1]);
+        }
+
+        $reservationStartTime = $startTimes->sort()->first();
+        $reservationEndTime = $endTimes->sortDesc()->first();
+
         $request->user()
             ->reservations()
-            ->create($request->validated());
+            ->create(
+                array_merge($request->validated(),
+                    [
+                        'reservation_start_time' => $reservationStartTime,
+                        'reservation_end_time' => $reservationEndTime
+                    ]
+                )
+            );
 
         return redirect('/my-reservations')->with('success', 'Reservation created successfully.');
     }
 
-    public function update(StoreReservationRequest $request,  Reservation $reservation)
+    public function update(StoreReservationRequest $request, Reservation $reservation)
     {
         $reservation->update($request->validated());
         return redirect('/my-reservations')->with('success', 'Reservation editted successfully.');

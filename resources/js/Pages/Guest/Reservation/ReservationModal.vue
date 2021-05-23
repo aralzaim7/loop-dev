@@ -35,9 +35,9 @@
 												</div>
 												<div class="col-span-6 sm:col-span-3">
 														<select-input
-																v-model="form.room_type"
+																v-model="form.room_type_id"
 																@update:model-value="roomTypeChanged()"
-																:error="form.errors.room_type"
+																:error="form.errors.room_type_id"
 																label="Room type">
 																<option v-for="roomType in roomTypes" :value="roomType.id">{{ roomType.name }}</option>
 														</select-input>
@@ -60,9 +60,9 @@
 																<loading-icon class="text-indigo-500 m-3"/>
 														</div>
 														<div v-else>
-																<div v-if="form.available_reservation_slots?.length > 0"
+																<div v-if="available_reservation_slots?.length > 0"
 																     class="grid grid-cols-4 gap-4">
-																		<div v-for="available_slot in form.available_reservation_slots"
+																		<div v-for="available_slot in available_reservation_slots"
 																		>
 
 																				<badged-checkbox-input
@@ -78,8 +78,11 @@
 																<div v-else-if="!form.room_type">
 																		Select a room type and date to see available time slots.
 																</div>
-																<div v-else-if="form.available_reservation_slots?.length === 0">
+																<div v-else-if="available_reservation_slots?.length === 0">
 																		Selected room is out of service on selected date.
+																</div>
+																<div v-if="form.errors.selected_time_slots"
+																     class="text-red-500 text-sm">{{ form.errors.selected_time_slots }}
 																</div>
 														</div>
 												</div>
@@ -147,11 +150,11 @@ export default {
 						form: this.$inertia.form({
 								title: this.reservation?.title,
 								category_id: this.reservation?.category_id,
-								room_type: this.reservation?.room_type,
-								available_reservation_slots: null,
-								selected_time_slots: this.reservation?.selected_time_slots,
+								room_type_id: this.reservation?.room_type_id,
+								reservation_date: this.reservation_date?.reservation_date,
+								selected_time_slots: [],
 						}),
-						selectedSlots: [],
+						available_reservation_slots: null,
 						loading: false,
 				}
 		},
@@ -159,22 +162,17 @@ export default {
 
 		methods: {
 				slotStatus(timeSlot) {
-						return this.selectedSlots.includes(`${timeSlot.start_time} - ${timeSlot.end_time}`);
+						return this.form.selected_time_slots.includes(`${timeSlot.start_time} - ${timeSlot.end_time}`);
 				},
 				slotSelected(object) {
-						if(!object.isSelected)
-						{
-								this.selectedSlots = this.selectedSlots.filter((item)=>object.slot !== item)
-
-								console.log(this.selectedSlots);
+						if (!object.isSelected) {
+								this.form.selected_time_slots = this.form.selected_time_slots.filter((item) => object.slot !== item)
+								console.log(this.form.selected_time_slots);
 								return
 						}
-						this.selectedSlots.push(object.slot)
-						console.log(this.selectedSlots);
-
-
+						this.form.selected_time_slots.push(object.slot)
+						console.log(this.form.selected_time_slots);
 				},
-
 				getNewAvailableSlots() {
 						this.loading = true;
 						axios
@@ -184,7 +182,7 @@ export default {
 								})
 								.then(response => {
 										this.loading = false
-										this.form.available_reservation_slots = response.data
+										this.available_reservation_slots = response.data
 								})
 								.catch(err => {
 										console.log(err);

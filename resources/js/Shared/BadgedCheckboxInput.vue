@@ -30,7 +30,7 @@ export default {
 				isSelected: {
 						type: Boolean,
 						required: true
-				},
+				}
 		},
 
 		emits: ['time-slot-clicked'],

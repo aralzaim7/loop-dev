@@ -24,10 +24,16 @@ class AvailableReservationTimesController extends Controller
         $day = strtolower(Carbon::parse($request->date)->dayName);
         $roomType = $request->room_type;
 
-        $openingHours = OpeningHour::query()
+        $query = OpeningHour::query()
             ->select(['start_time', 'end_time'])
-            ->where('day', $day)
-            ->where('room_type_id', $roomType)
+            ->where('day', $day);
+
+        if($roomType){
+            $query = $query
+                ->where('room_type_id', $roomType);
+        }
+
+        $openingHours = $query
             ->first();
 
         $data = collect();
@@ -46,7 +52,7 @@ class AvailableReservationTimesController extends Controller
             $data->push([
                 'start_time' => $hour->format('H:i'),
                 'end_time' => $hour->addHour()->format("H:i"),
-                'is_booked' => (boolean)rand(0,1),
+                'is_booked' => (boolean) 0,
             ]);
         }
         return response()->json($data);
