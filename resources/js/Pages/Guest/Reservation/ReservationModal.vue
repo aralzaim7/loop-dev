@@ -2,7 +2,7 @@
 		<ModalBase :open="open"
 		           @close-modal="closeModal()"
 		           class="p-5"
-		           wrapper-class="w-2/5 inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:p-6">
+		           wrapper-class="w-4/5 md:w-3/5 inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:p-6">
 				<div class="pb-2 flex justify-between items-center">
 						<div class="flex items-center flex-wrap max-w-[50vw]">
 								<h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -61,7 +61,7 @@
 														</div>
 														<div v-else>
 																<div v-if="available_reservation_slots?.length > 0"
-																     class="grid grid-cols-4 gap-4">
+																     class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 text-center">
 																		<div v-for="available_slot in available_reservation_slots"
 																		>
 
@@ -81,9 +81,10 @@
 																<div v-else-if="available_reservation_slots?.length === 0">
 																		Selected room is out of service on selected date.
 																</div>
-																<div v-if="form.errors.selected_time_slots"
-																     class="text-red-500 text-sm">{{ form.errors.selected_time_slots }}
+																<div v-if="selectedTimeSlotsError"
+																     class="text-red-500 text-sm">{{ selectedTimeSlotsError }}
 																</div>
+
 														</div>
 												</div>
 
@@ -136,6 +137,14 @@ export default {
 		},
 		mounted() {
 				this.form.reservation_date = this.reservation ? new Date(this.reservation.reservation_date) : new Date();
+		},
+		computed: {
+				selectedTimeSlotsError() {
+						let key = Object.keys(this.form.errors).find((error) => {
+								return error.includes('selected_time_slots')
+						});
+						return key ? this.form.errors[key] : false
+				}
 		},
 		// watch: {
 		// 		'form.room_type': {

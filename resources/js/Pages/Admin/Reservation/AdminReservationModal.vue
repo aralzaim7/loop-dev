@@ -2,7 +2,7 @@
 		<ModalBase :open="open"
 		           @close-modal="closeModal()"
 		           class="p-5"
-		           wrapper-class="w-3/5 inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:p-6">
+		           wrapper-class="w-4/5 md:w-3/5  inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:p-6">
 				<div class="pb-2 flex justify-between items-center">
 						<div class="flex items-center flex-wrap max-w-[50vw]">
 								<h3 class="text-lg leading-6 font-medium text-gray-900">

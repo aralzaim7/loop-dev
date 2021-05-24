@@ -29,7 +29,7 @@ class DateFormatArray implements Rule
     {
         $explodedValue = explode(' - ', $value);
         if (DateTime::createFromFormat('H:i', $explodedValue[0]) === false
-            || DateTime::createFromFormat('H:i', $explodedValue[0]) === false) {
+            || DateTime::createFromFormat('H:i', $explodedValue[1]) === false) {
             return false;
         }
         return true;
@@ -43,6 +43,7 @@ class DateFormatArray implements Rule
      */
     public function message(): string
     {
-        return 'Selected slots need to have Hour:Minute format.';
+        return
+            'Selected slots need to have Hour:Minute format.';
     }
 }
