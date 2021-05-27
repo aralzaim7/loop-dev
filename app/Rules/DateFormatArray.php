@@ -3,8 +3,7 @@
 namespace App\Rules;
 
 use Carbon\Carbon;
-use DateTime;
-use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\Rule;
 
 class DateFormatArray implements Rule
 {
@@ -28,8 +27,8 @@ class DateFormatArray implements Rule
     public function passes($attribute, $value): bool
     {
         $explodedValue = explode(' - ', $value);
-        if (DateTime::createFromFormat('H:i', $explodedValue[0]) === false
-            || DateTime::createFromFormat('H:i', $explodedValue[1]) === false) {
+        if (Carbon::canBeCreatedFromFormat($explodedValue[0],'H:i') === false
+            || Carbon::canBeCreatedFromFormat($explodedValue[1],'H:i') === false) {
             return false;
         }
         return true;

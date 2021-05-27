@@ -38,9 +38,9 @@ export default {
 		data() {
 				return {
 						selectedIndexes: [],
-						isBookedClass: 'opacity-50',
+						isBookedClass: 'pointer-events-none cursor-not-allowed opacity-50 bg-gray-200 text-gray-800',
 						isAvailableClass: 'cursor-pointer bg-yellow-200 text-yellow-600',
-						isUnavailableClass: 'cursor-not-allowed bg-red-200 text-red-800',
+						isUnavailableClass: 'pointer-events-none cursor-not-allowed bg-red-200 text-red-800',
 						isSelectedClass: 'ring-1 ring-green-600 bg-green-200 text-green-800',
 				}
 		},
