@@ -41,7 +41,7 @@ export default {
 						isBookedClass: 'pointer-events-none cursor-not-allowed opacity-50 bg-gray-200 text-gray-800',
 						isAvailableClass: 'cursor-pointer bg-yellow-200 text-yellow-600',
 						isUnavailableClass: 'pointer-events-none cursor-not-allowed bg-red-200 text-red-800',
-						isSelectedClass: 'ring-1 ring-green-600 bg-green-200 text-green-800',
+						isSelectedClass: 'cursor-pointer ring-1 ring-green-600 bg-green-200 text-green-800',
 				}
 		},
 		inject: ['sharedBadgeIndexes'],
@@ -76,23 +76,27 @@ export default {
 								slot: `${this.startTime} - ${this.endTime}`
 						})
 
+						let removedItem=null;
 						if (!this.isSelected) {
 								this.sharedBadgeIndexes.selectedIndexes.push(this.index)
 						} else {
 								this.sharedBadgeIndexes.selectedIndexes = this.sharedBadgeIndexes.selectedIndexes
-										.filter((item) => item !== this.index)
+										.filter((item) => {
+												removedItem = item
+												return item !== this.index
+										})
 						}
 
-						this.setAvailableIndexes()
+						this.setAvailableIndexes(removedItem)
 
 				},
 
-				setAvailableIndexes() {
+				setAvailableIndexes(removedItem) {
 
 						let maxIndex = Math.max(...this.sharedBadgeIndexes.selectedIndexes);
 						let minIndex = Math.min(...this.sharedBadgeIndexes.selectedIndexes);
 
-						if (this.index !== minIndex && this.index !== maxIndex) {
+						if (removedItem !== minIndex && removedItem !== maxIndex && removedItem) {
 								this.sharedBadgeIndexes.availableIndexes = []
 								this.sharedBadgeIndexes.selectedIndexes = []
 								this.$emit('reset-slots')
