@@ -25,6 +25,7 @@
         "@inertiajs/inertia": "^0.8.7",
         "@inertiajs/inertia-vue3": "^0.3.14",
         "@inertiajs/progress": "^0.2.4",
+        "@popperjs/core": "^2.9.2",
         "postcss-import": "^14.0.1",
         "postcss-nesting": "^7.0.1",
         "vue": "^3.0.11",

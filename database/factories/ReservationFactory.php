@@ -6,6 +6,7 @@ use App\Models\OpeningHour;
 use App\Models\Reservation;
 use App\Models\ReservationCategory;
 use App\Models\RoomType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,9 +31,9 @@ class ReservationFactory extends Factory
             'category_id' => ReservationCategory::factory(),
             'title' => $this->faker->text(20),
             'room_type_id' => RoomType::factory(),
-            'reservation_date' => $this->faker->dateTimeBetween('now','1 years')->format('Y-m-d'),
-            'reservation_start_time' => $this->faker->time('H:i'),
-            'reservation_end_time' => $this->faker->time('H:i'),
+            'reservation_date' => $this->faker->dateTimeBetween('now','1 months')->format('Y-m-d'),
+            'reservation_start_time' => Carbon::parse($this->faker->time('H:i'))->startOfHour(),
+            'reservation_end_time' => Carbon::parse($this->faker->time('H:i'))->startOfHour(),
             'status' => 'pending',
 
         ];

@@ -46,7 +46,7 @@ class ReservationViewModel
                     'id' => $reservation->id,
                     'category_id' => $reservation->category_id,
                     'title' => $reservation->title,
-                    'room_type' => $reservation->roomType->id,
+                    'room_type_id' => $reservation->roomType->id,
                     'room_type_name' => $reservation->roomType->name,
                     'reservation_date' => $reservation_date,
                     'reservation_start_time' => $reservation_start_time,

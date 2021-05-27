@@ -45,10 +45,11 @@
 
 												<div class="col-span-6 sm:col-span-3">
 
-														<datepicker-input v-model="form.reservation_date"
-														                  @update:model-value="getNewAvailableSlots()"
-														                  :error="form.errors.reservation_date"
-														                  label="Date"/>
+														<datepicker-input
+																v-model="form.reservation_date"
+																@update:model-value="getNewAvailableSlots()"
+																:error="form.errors.reservation_date"
+																label="Date"/>
 
 												</div>
 												<div class="col-span-6 sm:col-span-3"/>
@@ -62,18 +63,19 @@
 														<div v-else>
 																<div v-if="available_reservation_slots?.length > 0"
 																     class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 text-center">
-																		<div v-for="available_slot in available_reservation_slots"
-																		>
 
+																		<badged-checkbox-group>
 																				<badged-checkbox-input
+																						v-for="(available_slot, index) in available_reservation_slots"
+																						:index="index"
 																						:is-booked="available_slot.is_booked"
 																						:start-time="available_slot.start_time"
 																						:end-time="available_slot.end_time"
 																						:is-selected="slotStatus(available_slot)"
 																						@time-slot-clicked="slotSelected"
-																				>
-																				</badged-checkbox-input>
-																		</div>
+																						@reset-slots="resetSlots"
+																				/>
+																		</badged-checkbox-group>
 																</div>
 																<div v-else-if="!form.room_type">
 																		Select a room type and date to see available time slots.
@@ -115,6 +117,7 @@ import DatepickerInput from "@/Shared/DatepickerInput";
 import CheckboxInput from "@/Shared/CheckboxInput";
 import LoadingIcon from "@/Shared/LoadingIcon";
 import BadgedCheckboxInput from "@/Shared/BadgedCheckboxInput";
+import BadgedCheckboxGroup from "@/Shared/BadgedCheckboxGroup";
 
 export default {
 		props: {
@@ -124,6 +127,7 @@ export default {
 				roomTypes: {Object, required: true},
 		},
 		components: {
+				BadgedCheckboxGroup,
 				BadgedCheckboxInput,
 				LoadingIcon,
 				DatepickerInput,
@@ -146,14 +150,6 @@ export default {
 						return key ? this.form.errors[key] : false
 				}
 		},
-		// watch: {
-		// 		'form.room_type': {
-		// 				handler(value) {
-		// 						//do something
-		// 						console.log(value);
-		// 				}
-		// 		},
-		// },
 		data() {
 				return {
 						form: this.$inertia.form({
@@ -170,6 +166,9 @@ export default {
 		emits: ['close-modal'],
 
 		methods: {
+				resetSlots() {
+						this.form.selected_time_slots = []
+				},
 				slotStatus(timeSlot) {
 						return this.form.selected_time_slots.includes(`${timeSlot.start_time} - ${timeSlot.end_time}`);
 				},
@@ -186,7 +185,7 @@ export default {
 						this.loading = true;
 						axios
 								.post('/reservation-helper', {
-										room_type: this.form.room_type,
+										room_type: this.form.room_type_id,
 										date: this.formatDate(this.form.reservation_date)
 								})
 								.then(response => {

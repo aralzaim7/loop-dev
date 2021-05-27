@@ -64,8 +64,7 @@
 												<td class="border-t px-6 py-4 text-center" colspan="7">No reservations found</td>
 										</tr>
 								</table>
-								<!--								<pagination class="m-2 pb-4"/>-->
-								<pagination-left v-if="reservations.data.length !== 0" class="m-2 pb-4"
+								<pagination v-if="reservations.data.length !== 0" class="m-2 pb-4"
 								                 :data="reservations"/>
 						</div>
 				</div>
@@ -85,8 +84,7 @@
 import Layout from '@/Layouts/Layout';
 import {ShieldCheckIcon} from '@heroicons/vue/outline'
 import ReservationModal from "./ReservationModal";
-import Pagination from "@/Shared/Pagination";
-import PaginationLeft from "@/Shared/PaginationLeft";
+import Pagination from "@/Shared/PaginationLeft";
 
 export default {
 		name: 'Reservation',
@@ -99,7 +97,6 @@ export default {
 		computed:
 				{},
 		components: {
-				PaginationLeft,
 				Pagination,
 				ReservationModal,
 				ShieldCheckIcon

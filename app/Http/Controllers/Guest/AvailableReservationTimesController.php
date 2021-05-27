@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
 use App\Models\OpeningHour;
+use App\Models\Reservation;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
@@ -19,26 +20,21 @@ class AvailableReservationTimesController extends Controller
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request)
     {
-        $day = strtolower(Carbon::parse($request->date)->dayName);
+        $reservationDay = strtolower(Carbon::parse($request->date)->dayName);
+        $reservationDate = Carbon::parse($request->date)->format('Y-m-d');
         $roomType = $request->room_type;
-
-        $query = OpeningHour::query()
-            ->select(['start_time', 'end_time'])
-            ->where('day', $day);
-
-        if($roomType){
-            $query = $query
-                ->where('room_type_id', $roomType);
-        }
-
-        $openingHours = $query
-            ->first();
 
         $data = collect();
 
-        if (!$openingHours->start_time) {
+        if ($roomType) {
+            $openingHours = OpeningHour::query()
+                ->select(['start_time', 'end_time'])
+                ->where('day', $reservationDay)
+                ->where('room_type_id', $roomType)
+                ->first();
+        } else {
             return response()->json($data);
         }
 
@@ -49,10 +45,19 @@ class AvailableReservationTimesController extends Controller
             ->excludeEndDate();
 
         foreach ($hoursArray as $hour) {
+
+
+            $bookedSlot = Reservation::query()
+                ->where('room_type_id', $roomType)
+                ->where('reservation_start_time', '<=', $hour->format('H:i:s'))
+                ->where('reservation_end_time', '>' ,$hour->format('H:i:s'))
+                ->where('reservation_date', $reservationDate)
+                ->first();
+
             $data->push([
                 'start_time' => $hour->format('H:i'),
                 'end_time' => $hour->addHour()->format("H:i"),
-                'is_booked' => (boolean) 0,
+                'is_booked' => (boolean) ($bookedSlot ? 1 : 0),
             ]);
         }
         return response()->json($data);
