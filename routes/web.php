@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminReservationController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReservationUserController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Guest\AvailableReservationTimesController;
 use App\Http\Controllers\Guest\GuestDashboardController;
 use App\Http\Controllers\Guest\GuestReservationController;
@@ -42,9 +43,13 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+
         Route::get('/reservations', [AdminReservationController::class, 'index']);
         Route::put('/reservations/{reservation}', [AdminReservationController::class, 'update']);
+
         Route::get('/reservation-users', [ReservationUserController::class, 'index']);
+
+        Route::post('/notification-sender', NotificationController::class);
     });
 });
 

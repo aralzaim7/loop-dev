@@ -16,7 +16,7 @@
 
 <script>
 import DropdownButtons from "@/Shared/DropdownButtons";
-import {MailIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/vue/outline'
+import {BellIcon, MailIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/vue/outline'
 
 
 export default {
@@ -25,9 +25,9 @@ export default {
 						title: 'Bulk Actions',
 						buttonList: [
 								{
-										title: 'Send E-mail',
-										icon: MailIcon,
-										action: 'send-email',
+										title: 'Notification',
+										icon: BellIcon,
+										action: 'send-notification',
 								},
 								{
 										title: 'Other Button',
@@ -41,7 +41,7 @@ export default {
 				}
 		},
 		name: "UsersDropdownButtons",
-		components: {DropdownButtons,MailIcon}
+		components: {DropdownButtons,BellIcon}
 }
 </script>
 

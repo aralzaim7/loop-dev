@@ -6,11 +6,11 @@
 						</div>
 						<div class="mb-2 flex justify-end items-center">
 								<users-dropdown-buttons
-										@send-email="sendEmail()"
+										@send-notification="sendNotification()"
 										@other-action="otherAction()"
 										@another-action="anotherAction()"
 								/>
-							</div>
+						</div>
 						<div class="bg-white rounded-md shadow overflow-x-auto">
 								<table class="w-full whitespace-nowrap">
 										<tr class="text-left font-bold">
@@ -75,10 +75,18 @@ export default {
 		layout: Layout,
 
 		methods: {
-				sendEmail() {
-					this.users.data.map((user)=>{
-							console.log(user.email);
-					})
+				sendNotification() {
+						let emailList = this.users.data.map((item)=> item.email);
+						axios
+								.post('/admin/notification-sender', {
+										email_list: emailList,
+								})
+								.then(response => {
+										console.log(response)
+								})
+								.catch(err => {
+										console.log(err)
+								});
 				},
 				otherAction() {
 						console.log('otherAction')

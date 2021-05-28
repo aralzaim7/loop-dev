@@ -12,6 +12,8 @@
         "inertiajs/inertia-laravel": "^0.4.1",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
+        "laravel/horizon": "^5.7",
+        "laravel/slack-notification-channel": "^2.3",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
