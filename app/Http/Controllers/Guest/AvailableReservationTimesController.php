@@ -37,6 +37,9 @@ class AvailableReservationTimesController extends Controller
         } else {
             return response()->json($data);
         }
+        if (!$openingHours->start_time && !$openingHours->end_time) {
+            return response()->json($data);
+        }
 
         $startTime = Carbon::parse($openingHours->start_time);
         $endTime = Carbon::parse($openingHours->end_time);
@@ -46,11 +49,10 @@ class AvailableReservationTimesController extends Controller
 
         foreach ($hoursArray as $hour) {
 
-
             $bookedSlot = Reservation::query()
                 ->where('room_type_id', $roomType)
                 ->where('reservation_start_time', '<=', $hour->format('H:i:s'))
-                ->where('reservation_end_time', '>' ,$hour->format('H:i:s'))
+                ->where('reservation_end_time', '>', $hour->format('H:i:s'))
                 ->where('reservation_date', $reservationDate)
                 ->first();
 
