@@ -23,6 +23,7 @@ class CreateReservationsTable extends Migration
             $table->time('reservation_start_time');
             $table->time('reservation_end_time');
             $table->string('status')->default('pending');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

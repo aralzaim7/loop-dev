@@ -5,22 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'category_id',
-        'room_type_id',
-        'status',
-        'reservation_date',
-        'reservation_start_time',
-        'reservation_end_time',
-        'user_id',
-
-    ];
+    protected $guarded = [];
 
 
     protected $casts = [
